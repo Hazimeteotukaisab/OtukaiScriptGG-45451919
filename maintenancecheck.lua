@@ -1,18 +1,36 @@
--- 数字の設定（ここに0または1を設定してください）
-maintenanceFlag = 0  -- 1をメンテナンスモード、0を通常モードとして設定
-maintenanceFlag = tonumber(gg.makeRequest("https://raw.githubusercontent.com/Hazimeteotukaisab/OtukaiScriptGG-45451919/main/MaintenanceSettings/Startsetting").content)
+-- メンテナンスモードの設定
+local response = gg.makeRequest("https://raw.githubusercontent.com/Hazimeteotukaisab/OtukaiScriptGG-45451919/main/MaintenanceSettings/Startsetting")
+if not response or not response.content then
+    gg.alert("設定を取得できませんでした。")
+    os.exit()
+end
+
+local maintenanceFlag = tonumber(response.content)
+if maintenanceFlag == nil then
+    gg.alert("無効な設定値が返されました。")
+    os.exit()
+end
 
 function Main()
-  -- 数字が1の場合はメンテナンスメッセージを表示して終了
+    -- メンテナンス中か確認
     if maintenanceFlag == 1 then
         gg.alert("メンテナンス中です。しばらくお待ちください。")
         os.exit()
     end
 
-    -- 数字が0の場合はスクリプトを実行するオプションを表示
+    -- スクリプトの実行
     if maintenanceFlag == 0 then
-    local api = gg.makeRequest("https://raw.githubusercontent.com/Hazimeteotukaisab/OtukaiScriptGG-45451919/main/menu.lua");
-if not pcall(load(api.content)) then
+        local apiResponse = gg.makeRequest("https://raw.githubusercontent.com/Hazimeteotukaisab/OtukaiScriptGG-45451919/main/menu.lua")
+        if not apiResponse or not apiResponse.content then
+            gg.alert("メニューを取得できませんでした。")
+            os.exit()
+        end
+
+        -- スクリプトを安全に実行
+        local success, errorMessage = pcall(load(apiResponse.content))
+        if not success then
+            gg.alert("スクリプトの実行に失敗しました: " .. errorMessage)
+            os.exit()
+        end
     end
-  end
 end
