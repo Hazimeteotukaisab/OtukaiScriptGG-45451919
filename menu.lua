@@ -1,27 +1,48 @@
--- メニューを表示する関数
-function showMenu()
-    local menuItems = {
-        "1",
-        "2",
-        "3",
-        "EXIT"
-    }
-    
-    -- メニューを表示
-    local choice = gg.choice(menuItems, nil, "てすと")
-    
-    if choice == 1 then
-        gg.alert("1")
-    elseif choice == 2 then
-        gg.alert("2")
-    elseif choice == 3 then
-        gg.alert("3“)
-    elseif choice == 4 then
-        gg.alert("Exiting...")
-        os.exit()  -- スクリプトを終了
-    else
-    end
+Ax = gg.choice({
+"高速移動オン",
+"高速移動オフ",
+"戻る"}, nil, "高速移動")
+
+if Ax ~= nil then
+
+if Ax == 1 then
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+Ax = gg.prompt({"足の速さの編集値を入力"},{5},{"number"})
+if not Ax then return end
+
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber("1",gg.TYPE_DOUBLE)
+gg.getResults(9999)
+gg.editAll(Ax[1],gg.TYPE_DOUBLE)
+gg.clearResults()
+gg.toast("✅ON✅")
 end
 
--- メニューを表示
-showMenu()
+if Ax == 2 then
+gg.clearResults()
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+Ax = gg.prompt({"足の速さの編集値を入力"},{5},{"number"})
+if not Ax then return end
+
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(Ax[1],gg.TYPE_DOUBLE)
+gg.getResults(9999)
+gg.editAll("1",gg.TYPE_DOUBLE)
+gg.clearResults()
+gg.toast("✖OFF✖")
+end
+
+if Ax == 3 then
+local api = gg.makeRequest("");
+if not pcall(load(api.content)) then
+end
+end
+
+if Lext == 1 then
+Main()
+end
+end
