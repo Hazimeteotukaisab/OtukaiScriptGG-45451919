@@ -13,7 +13,9 @@ Ax = gg.choice({
 if Ax ~= nil then
 
 if Ax == 1 then
-gg.alert("a")
+local api = gg.makeRequest("");
+if not pcall(load(api.content)) then
+gg.alert("ようこそ")
 end
 
 if Ax == 2 then
